@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMCO</title>
+  </head>
+<body>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 20px 20px 60px #f0f0f0, -20px -20px 60px #ffffff;
+            
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            color:gray;
+        }
+
+        input[type="text"],
+        input[type="checkbox"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: #f0f0f0;
+            box-sizing: border-box;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            box-shadow: inset 5px 5px 15px #b0b0b0, inset -5px -5px 15px #ffffff;
+        }
+
+            input[type="text"]:focus,
+            textarea:focus,
+            select:focus {
+                outline: none;
+                box-shadow: inset 3px 3px 8px #b0b0b0, inset -3px -3px 8px #ffffff;
+            }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            background: #041049;
+            color: #F5DD90;
+            cursor: pointer;
+            box-shadow: 10px 10px 20px #b0b0b0, -10px -10px 20px #ffffff;
+        }
+
+            button:hover {
+                transform: translateY(2px);
+                box-shadow: 5px 5px 10px #b0b0b0, -5px -5px 10px #ffffff;
+            }
+
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        .header {
+            display: flex;
+            width: 100%;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .Lable {
+            width: 60%;
+            margin-bottom:0!important;
+            color: #F5DD90;
+        }
+
+        .edit-existing-conflict-button {
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: absolute;
+            top: 70px;
+            right: 10px;
+            box-shadow: none !important;
+        }
+
+        .EditConflict {
+            width: 100%;
+        }
+
+        @@media only screen and (max-width: 600px) {
+            .edit-existing-conflict-button {
+                top: 53px;
+                right: 5px;
+                margin-left: 0;
+            }
+            .EditConflict{
+                height: 50PX;
+            }
+        }
+
+        @@media only screen and (min-width: 600px) and (max-width: 770px) {
+            .edit-existing-conflict-button {
+                top: 55px;
+                right: 5px;
+                margin-left: 0;
+            }
+        }
+
+        @@media (min-width: 992px){
+          .container{
+            max-width: 772px!important;
+          }
+
+            .form-container {
+                padding: 12px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+            input[type="text"],
+            input[type="checkbox"],
+            textarea,
+            select {
+                padding: 6px;
+            }
+        }
+        @@media (min-width: 1200px){
+          .container{
+            max-width: 1040px!important;
+          }
+        }
+        @@media only screen and (min-width: 600px) and (max-width: 930px) {
+            
+            .EditConflict {
+                height: 50PX;
+            }
+        }
+        .hidden-dropdown {
+            display: none;
+        }
+
+        .container {
+          margin-left:0!important;
+        }
+
+        .btn-position{
+            display: flex;
+            justify-content: end;
+            margin-right: 15px;
+        }
+    </style>
+  <div class="container">
+        <div class="EditConflict">
+          <button type="button" id="btnEdit" class="edit-existing-conflict-button" onclick="Edit()">Edit Existence Conflict</button>
+        </div>
+        
+    <div class="form-container">
+            <form method="post" action="@Url.Action("Index", "ConflictForm")">
+            <div class="form-group">
+                <label for="clientName">Client Name</label>
+                <input type="text" id="clientName" name="ClientName" />
+            </div>
+
+            <div class="form-group">
+                <label for="listedCompany">Is the client / Counterparty a listed Company</label>
+                <select id="onBehalfOf" name="OnBehalfOf">
+                    <option value="-1" >Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="matterDescription">Brief description of matter / Work type</label>
+                <input type="text" id="matterDescription" name="MatterDescription" />
+            </div>
+
+            <div class="form-group">
+                <label for="otherParties">Other Party(ies)</label>
+                <input type="text" id="otherParties" name="OtherParties" />
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="Status" onclick="StatusInfo()">
+                    <option value="-1">---select---</option>
+                    <option value="0">Mandate</option>
+                    <option value="1">Fee proposal</option>
+                    <option value="2">Under discussion</option>
+                </select>
+                    <div id="status-info-container"></div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="nationalPracticeGroup">National practice group (NPG) involved</label>
+                <input type="text" id="nationalPracticeGroup" name="NationalPracticeGroup" />
+            </div>
+
+            <div class="form-group">
+                <label for="sourcedBy">Sourced by</label>
+                <input type="text" id="sourcedBy" name="SourcedBy" />
+            </div>
+
+            <div class="form-group">
+                <label for="referringFirm">Referring firm</label>
+                <input type="text" id="referringFirm" name="ReferringFirm" />
+            </div>
+
+            <div class="form-group">
+                <label for="revertRequiredBy">Revert Required by</label>
+                <input type="text" id="revertRequiredBy" name="RevertRequiredBy" />
+            </div>
+
+            <div class="form-group">
+                <label for="network">Is there firm part of any network?</label>
+                <select id="Is_Firm_Part" name="OnBehalfOf" onchange="OnSelect()">
+                    <option value="-1">---Select---</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="priceSensitive">Price sensitive?</label>
+                <select id="onBehalfOf" name="OnBehalfOf">
+                    <option value="Select">Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="previousConflict">Previous conflict circulated (if any)?</label>
+                <select id="onBehalfOf" name="OnBehalfOf">
+                    <option value="-1">Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+                
+
+            <div class="form-group">
+                <label for="comments">Comments</label>
+                <textarea id="comments" name="Comments"></textarea>
+            </div>
+            <div class="btn-position">
+                <button type="submit">Submit</button>
+             </div>
+        </form>
+    </div>
+    </div>
+
+    <script>
+        function StatusInfo() {
+            var selectedValue = document.getElementById("status").value;
+            var statusInfoContainer = document.getElementById("status-info-container");
+
+            statusInfoContainer.innerHTML = "";
+
+            var statusDescriptions = {
+                "0": "Mandate Letter accepted and signed by the Client",
+                "1": "Fee proposal provided to the Client or a Mandate Letter has been issued but not yet signed by the Client",
+                "2": "Under discussion with the Client (e.g. initial meeting or conversation has taken place, pitch or proposal submitted), but no fee proposal or Mandate Letter has been issued as yet."
+            };
+
+            if (selectedValue !== "-1") {
+                var statusDescription = statusDescriptions[selectedValue];
+                if (statusDescription) {
+                    var statusInfo = document.createElement("div");
+                    statusInfo.textContent = statusDescription;
+                    statusInfo.classList.add("status-info");
+                    statusInfoContainer.appendChild(statusInfo);
+                }
+            }
+        }
+
+        function Edit() {
+            window.location.href = '/Home/Index';
+        }
+
+        function OnSelect() {
+            var selectedValue = document.getElementById("Is_Firm_Part").value;
+                        if (selectedValue === "1") {
+                            $.ajax({
+                                url: '/ConflictForm/FirmName',
+                                type: 'POST',
+                                success: function (response) {
+                                    var dropdown = document.createElement("hiddenfirmDropdown");
+                                    if (response.success) {
+                                        var firmData = JSON.parse(response.data);
+                                        if (dropdown) {
+                                            dropdown = document.createElement("select");
+                                            dropdown.id = "firmDropdown";
+                                            dropdown.name = "FirmDropdown";
+                                            firmData.forEach(function (item) {
+                                                var option = document.createElement("option");
+                                                option.value = item.Value;
+                                                option.text = item.Name;
+                                                dropdown.appendChild(option);
+                                                if (item.Value === "-1") {
+                                                    option.selected = true;
+                                                }
+                                            });
+                                            var container = document.querySelector(".form-container");
+                                            var secondFormGroup = document.querySelectorAll(".form-group")[9];
+                                            console.log(secondFormGroup);
+                                            secondFormGroup.parentNode.insertBefore(dropdown, secondFormGroup.nextSibling);
+                                            
+                                        }
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Method not Created', 'error');
+                                }
+                            });
+                        } else {
+                            var dropdownToRemove = document.getElementById("firmDropdown");
+                            if (dropdownToRemove) {
+                                dropdownToRemove.parentNode.removeChild(dropdownToRemove);
+                            }
+                            return;
+                        }
+        }
+
+    </script>
+
+</body>
+</html>

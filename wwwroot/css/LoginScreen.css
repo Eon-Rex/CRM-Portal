@@ -1,0 +1,122 @@
+﻿
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f0f0f0;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background: #041049;
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.container {
+  background: #f0f0f0;
+  border-radius: 20px;
+  box-shadow: -10px -10px 20px #ffffff, 10px 10px 20px #d3d3d3;
+  padding: 20px; /* Reduced padding */
+  max-width: 400px;
+  width: 90%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.logo img {
+  width: 150px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 15px; /* Reduced margin */
+}
+
+  .form-group input {
+    width: 100%;
+    padding: 12px; /* Reduced padding */
+    border: none;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #d3d3d3;
+    outline: none;
+    font-size: 16px; /* Reduced font size */
+    color: #333;
+  }
+
+.captcha {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+  .captcha span {
+    color: #333;
+    font-size: 22px;
+    margin-right: 5px;
+  }
+
+  .captcha input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: inset -5px -5px 10px #ffffff, inset 5px 5px 10px #d3d3d3;
+    outline: none;
+    font-size: 18px;
+    color: #333;
+  }
+
+.error-message {
+  color: red;
+  margin-top: 15px; /* Reduced margin */
+  font-size: 14px; /* Reduced font size */
+  text-align: center;
+}
+
+.login-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #7e4c27;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+  .login-button:hover {
+    background-color: #7e4c27;
+  }
+
+@@media screen and (max-width: 500px) {
+  .container {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .logo img {
+    width: 120px;
+  }
+
+  .captcha input {
+    padding: 10px;
+    font-size: 14px; /* Adjusted font size */
+  }
+}

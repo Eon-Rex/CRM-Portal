@@ -1,0 +1,62 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+header {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+a{
+  text-decoration:none;
+}
+
+.headerclass {
+  background-color: #324376 !important;
+}
+
+
+span {
+  color: #F5DD90 !important;
+}
+
+
+.footer {
+  position:relative!important;
+  padding: 1rem 0;
+}
+
+/* Media Queries */
+
+
+@media (max-width: 768px) {
+  header {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  header {
+    font-size: 1rem;
+  }
+}

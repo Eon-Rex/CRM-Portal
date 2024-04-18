@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMCO</title>
+    <script src="~/js/site.js"></script>
+</head>
+<body>
+    <style>
+
+        .editable {
+            background: #e0e0e0;
+            box-shadow: inset 8px 8px 16px #bcbcbc, inset -8px -8px 16px #ffffff;
+            color: black;
+            border-radius: 10px;
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+        }
+
+        .readonly {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-weight: bold;
+            color: lightgray;
+            width: 100%;
+            border: none;
+            outline: none;
+            cursor: not-allowed;
+        }
+
+        input[type="text"],
+        input[type="checkbox"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: #f0f0f0;
+            box-sizing: border-box;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            box-shadow: inset 5px 5px 15px #b0b0b0, inset -5px -5px 15px #ffffff;
+        }
+
+            input[type="text"]:focus,
+            textarea:focus,
+            select:focus {
+                outline: none;
+                box-shadow: inset 3px 3px 8px #b0b0b0, inset -3px -3px 8px #ffffff;
+            }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            background: #041049;
+            color: #F5DD90;
+            cursor: pointer;
+            box-shadow: 10px 10px 20px #b0b0b0, -10px -10px 20px #ffffff;
+        }
+
+            button:hover {
+                transform: translateY(2px);
+                box-shadow: 5px 5px 10px #b0b0b0, -5px -5px 10px #ffffff;
+            }
+
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .back-button {
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: absolute;
+            top: 70px;
+            left: 8px;
+            box-shadow: none !important;
+        }
+
+        .Backbuttondiv {
+            width: 100%;
+            height: 50PX;
+        }
+
+        @@media only screen and (max-width: 600px) {
+            .back-button {
+                top: 53px;
+                margin-left: 0;
+            }
+        }
+
+        @@media only screen and (min-width: 600px) and (max-width: 770px) {
+            .back-button {
+                top: 55px;
+                margin-left: 0;
+            }
+        }
+
+        .hidden-dropdown {
+            display: none;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 20px 20px 60px #f0f0f0, -20px -20px 60px #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: gray;
+        }
+
+
+        .header {
+            display: flex;
+            width: 100%;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .Lable {
+            width: 60%;
+            margin-bottom: 0 !important;
+            color: #F5DD90;
+        }
+
+        @@media (min-width: 992px) {
+            .container {
+                max-width: 772px !important;
+            }
+
+            .form-container {
+                padding: 12px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            input[type="text"],
+            input[type="checkbox"],
+            textarea,
+            select {
+                padding: 6px;
+            }
+        }
+
+        @@media (min-width: 1200px) {
+            .container {
+                max-width: 1040px !important;
+            }
+        }
+
+        .container {
+            margin-left: 0 !important;
+        }
+
+        .btn-position {
+            display: flex;
+            justify-content: end;
+            margin-right: 15px;
+        }
+    </style>
+    <div class="container">
+        <div class="Backbuttondiv">
+            <button type="button" id="btnback" class="back-button" onclick="Back()">Back</button>
+        </div>
+        <form id="myForm">
+        <div class="form-container">
+                <div class="form-group">
+                    <label for="clientName">Client Name</label>
+                    <input type="text" id="clientName" name="clientName" value="@Model.ClientName" class="editable">
+                </div>
+
+                <div class="form-group">
+                    <label for="listedCompany">Is the client / Counterparty a listed Company</label>
+                    <input type="text" id="listedCompany" name="listedCompany" value="@((Model.IsListedCompany == "1") ? "Yes" : "No")" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="matterDescription">Brief description of matter / Work type</label>
+                    <input type="text" id="matterDescription" name="matterDescription" value="@Model.MatterDescription" class="editable">
+                </div>
+
+                <div class="form-group">
+                    <label for="otherParties">Other Party(ies)</label>
+                    <input type="text" id="otherParties" name="otherParties" value="@Model.OtherParties" class="editable">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="Status" onclick="StatusInfo()">
+                        <option value="-1">---select---</option>
+                        <option value="0">Mandate</option>
+                        <option value="1">Fee proposal</option>
+                        <option value="2">Under discussion</option>
+                    </select>
+                    <div id="status-info-container"></div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="nationalPracticeGroup">National practice group (NPG) involved</label>
+                    <input type="text" id="nationalPracticeGroup" name="nationalPracticeGroup" value="@Model.NationalPracticeGroup" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="sourcedBy">Sourced by</label>
+                    <input type="text" id="sourcedBy" name="sourcedBy" value="@Model.SourcedBy" class="editable">
+                </div>
+
+                <div class="form-group">
+                    <label for="referringFirm">Referring firm</label>
+                    <input type="text" id="referringFirm" name="referringFirm" value="@Model.ReferringFirm" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="revertRequiredBy">Revert Required by</label>
+                    <input type="text" id="revertRequiredBy" name="RevertRequiredBy" value="@Model.RevertRequiredBy" class="readonly" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label for="network">Is there firm part of any network?</label>
+                    <input type="text" id="network" name="network" value="@((Model.IsFirmPartOfNetwork == "1") ? "Yes" : "No")" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="priceSensitive">Price sensitive?</label>
+                    <input type="text" id="priceSensitive" name="priceSensitive" value="@((Model.PriceSensitive == "1") ? "Yes" : "No")" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="previousConflict">Previous conflict circulated (if any)?</label>
+                    <input type="text" id="previousConflict" name="previousConflict" value="@((Model.PreviousConflictCirculated == "1") ? "Yes" : "No")" class="readonly" readonly>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="comments">Comments</label>
+                    <input type="text" id="comments" name="comments" value="@Model.Comments" class="editable">
+                </div>
+
+
+                <div class="btn-position">
+                    <button type="submit">Submit</button>
+                </div>
+        </div>
+        </form>
+    </div>
+
+    <script>
+
+                function Back(){
+                  window.location.href='/Home/Index';
+                }
+        
+        function StatusInfo() {
+            var selectedValue = document.getElementById("status").value;
+            var statusInfoContainer = document.getElementById("status-info-container");
+
+            statusInfoContainer.innerHTML = "";
+
+            var statusDescriptions = {
+                "0": "Mandate Letter accepted and signed by the Client",
+                "1": "Fee proposal provided to the Client or a Mandate Letter has been issued but not yet signed by the Client",
+                "2": "Under discussion with the Client (e.g. initial meeting or conversation has taken place, pitch or proposal submitted), but no fee proposal or Mandate Letter has been issued as yet."
+            };
+
+            if (selectedValue !== "-1") {
+                var statusDescription = statusDescriptions[selectedValue];
+                if (statusDescription) {
+                    var statusInfo = document.createElement("div");
+                    statusInfo.textContent = statusDescription;
+                    statusInfo.classList.add("status-info");
+                    statusInfoContainer.appendChild(statusInfo);
+                }
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            var statusValue = "@Model.Status";
+            if (statusValue !== "") {
+                document.getElementById("status").value = statusValue;
+                StatusInfo(); // Update status information
+            }
+
+            //work for is frm part of any network
+            var isFirmPartOfNetworkValue = "@Model.IsFirmPartOfNetwork";
+            if (isFirmPartOfNetworkValue === "1") {
+                appendFrmbox();
+            }
+        });
+        
+        function appendFrmbox() {
+
+            var divdata = document.createElement("div");
+            divdata.classList.add("form-group");
+
+            var firmData = "@Model.FirmDropdownvalue";
+            if (firmData) {
+                var dropdown = document.createElement("input");
+                dropdown.type = "text";
+                dropdown.id = "firmValue";
+                dropdown.name = "firmValue";
+                dropdown.value = firmData;
+                dropdown.classList.add("readonly");
+                dropdown.setAttribute("readonly", "readonly");
+
+                divdata.appendChild(dropdown);
+
+                var container = document.querySelector(".form-container");
+                var secondFormGroup = document.querySelectorAll(".form-group")[9];
+
+                container.insertBefore(divdata, secondFormGroup.nextSibling);
+            }
+        }
+
+
+        function submitForm() {
+            var form = document.getElementById("myForm");
+            var formData = new FormData(form);
+            console.log(formData);
+            $.ajax({
+                url: "/Edit/SaveEdit",
+                type: "POST",
+                data: "{formData:" + formData + "}",
+                contentType: JSON,
+                success: function (response) {
+                    // Handle success response from the server
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response from the server
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+    </script>
+
+</body>
+</html>

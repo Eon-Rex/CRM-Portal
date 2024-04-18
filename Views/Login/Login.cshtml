@@ -1,0 +1,114 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conflict Avoidance Portal</title>
+    <link rel="stylesheet" href="~/css/LoginScreen.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+    <h1>Conflict Avoidance Portal</h1>
+</div>
+
+<div class="container">
+    <div class="logo">
+        <img src="~/SAMLogo.png" alt="SAM Logo">
+    </div>
+    <div class="form-group">
+        <input type="text" id="txtUserName" placeholder="Username">
+    </div>
+    <div class="form-group">
+        <input type="password" id="txtPassword" placeholder="Password">
+    </div>
+    <div class="captcha">
+            <span id="lblNo1">@ViewData["Number1"]</span>
+            <span> + </span>
+            <span id="lblNo2">@ViewData["Number2"]</span>
+            <span> = </span>
+            <input type="text" id="txtTotal" placeholder="Captcha Value">
+    </div>
+        <button type="button" id="BtnLogin" class="login-button" onclick="LoginButton()">Log In</button>
+    <div class="error-message" id="lblMessage1"></div>
+</div>
+
+<noscript>
+    <div style="display:block; border: 1px solid black;color:red; text-align:center;">
+        You don't have JavaScript enabled. Please enable before logging in.
+    </div>
+    <META CONTENT="0;URL=Login.aspx">
+</noscript>
+
+<script>
+        function ShowMessage(Text, type) {
+            switch (type) {
+                case "success":
+                    Swal.fire({
+                        text: Text,
+                        icon: 'success',
+                        confirmButtonText: 'ok'
+                    })
+                    break;
+                case "error":
+                    Swal.fire({
+                        text: Text,
+                        icon: 'error',
+                        confirmButtonText: 'ok'
+                    })
+                    break;
+                case "info":
+                    Swal.fire({
+                        text: Text,
+                        icon: 'info',
+                        confirmButtonText: 'ok'
+                    })
+                    break;
+                default:
+                    Swal.fire({
+                        text: Text,
+                        confirmButtonText: 'ok'
+                    })
+
+            }
+
+
+        }
+
+        function LoginButton() {
+            var AddNo = parseInt(document.getElementById('lblNo1').innerText) + parseInt(document.getElementById('lblNo2').innerText);
+            var txtTotal = parseInt(document.getElementById("txtTotal").value);
+            if (AddNo === txtTotal) {
+                var username = document.getElementById("txtUserName").value;
+                var password = document.getElementById("txtPassword").value;
+
+                // AJAX call
+                $.ajax({
+                    url: '/Login/Validate',
+                    type: 'POST',
+                    data: { username: username, password: password },
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = '/ConflictForm/Index';
+                        } else {
+                            ShowMessage('Login Failed', 'error');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        ShowMessage(xhr.responseText, 'error');
+                    }
+                });
+            } else {
+                ShowMessage('Invalid Captcha', 'error');
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
